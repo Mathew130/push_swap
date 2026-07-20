@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlucka <mlucka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/18 02:09:25 by mlucka            #+#    #+#             */
-/*   Updated: 2026/07/18 14:28:04 by mlucka           ###   ########.fr       */
+/*   Created: 2026/07/20 18:10:58 by mlucka            #+#    #+#             */
+/*   Updated: 2026/07/20 19:38:29 by mlucka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
+#include "push_swap.h"
 
 int	is_number(char *str)
 {
 	int	i;
 
 	i = 0;
-	while (str[i] == '-' || str[i] == '+')
+	if (str[i] == '-' || str[i] == '+')
 		i++;
+	if (str[i] == '\0')
+		return (0);
 	while (str[i])
 	{
 		if (str[i] >= '0' && str[i] <= '9')
@@ -36,12 +36,10 @@ int	is_number(char *str)
 int	check_arguments(int argc, char **argv)
 {
 	int	i;
-	int	j;
 
 	i = 1;
-	j = 0;
 	while (i < argc)
-	{   
+	{
 		if (is_number(argv[i]) == 0)
 			return (0);
 		i++;
@@ -49,24 +47,22 @@ int	check_arguments(int argc, char **argv)
 	return (1);
 }
 
-int	main(int argc, char **argv)
-// argc number of arguments,argv the arguments themselves
+int	check_duplicates(int argc, char **argv)
 {
-	if (check_arguments(argc, argv) == 0)
+	int	i;
+	int	j;
 
+	i = 1;
+	while (i < argc - 1)
 	{
-		write(1, "error\n", 6);
-		return (1);
+		j = i + 1;
+		while (j < argc)
+		{
+			if (atoi(argv[i]) == atoi(argv[j]))
+				return (0);
+			j++;
+		}
+		i++;
 	}
-	else
-	{  
-	  int  i = 1;
-	   while(i < argc)
-	   {
-		   write(1, argv[i], strlen(argv[i]));
-		   write(1, "\n", 1);
-	       i++;
-	   }
-	}
-	return(0);
+	return (1);
 }
