@@ -6,7 +6,7 @@
 /*   By: mlucka <mlucka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/20 05:11:22 by mlucka            #+#    #+#             */
-/*   Updated: 2026/07/20 21:04:14 by mlucka           ###   ########.fr       */
+/*   Updated: 2026/07/21 03:59:02 by mlucka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,8 @@ t_node				*create_node(int value);
 void				build_stack(int argc, t_stack *stack, char **argv);
 void				add_back(t_stack *stack, t_node *new_node);
 int					check_duplicates(int argc, char **argv);
-
+int					is_int(char *str);
+void				free_split(char **split);
+int					count_split(char **split);
+double				compute_disorder(t_stack *stack);
 #endif

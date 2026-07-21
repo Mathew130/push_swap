@@ -1,47 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack.c                                            :+:      :+:    :+:   */
+/*   metrics.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlucka <mlucka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/20 18:13:56 by mlucka            #+#    #+#             */
-/*   Updated: 2026/07/21 03:18:06 by mlucka           ###   ########.fr       */
+/*   Created: 2026/07/21 03:59:29 by mlucka            #+#    #+#             */
+/*   Updated: 2026/07/21 03:59:35 by mlucka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	add_back(t_stack *stack, t_node *new_node)
+double	compute_disorder(t_stack *stack)
 {
 	t_node	*current;
+	t_node	*runner;
+	int		mistakes;
+	int		total_pairs;
 
-	if (stack->head == NULL)
-	{
-		stack->head = new_node;
-		return ;
-	}
+	mistakes = 0;
+	total_pairs = 0;
 	current = stack->head;
-	while (current->next)
-		current = current->next;
-	current->next = new_node;
-}
-
-void	build_stack(int argc, t_stack *stack, char **argv)
-{
-	int		i;
-	t_node	*new_node;
-
-	stack->head = NULL;
-	stack->size = 0;
-	i = 0;
-	while (i < argc)
+	while (current)
 	{
-		new_node = create_node(ft_atoi(argv[i]));
-		if (!new_node)
-			return ;
-		add_back(stack, new_node);
-		stack->size++;
-		i++;
+		runner = current->next;
+		while (runner)
+		{
+			total_pairs++;
+			if (current->value > runner->value)
+				mistakes++;
+			runner = runner->next;
+		}
+		current = current->next;
 	}
+	if (total_pairs == 0)
+		return (0.0);
+	return ((double)mistakes / (double)total_pairs);
 }

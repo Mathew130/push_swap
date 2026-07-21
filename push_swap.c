@@ -6,7 +6,7 @@
 /*   By: mlucka <mlucka@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/20 16:35:47 by mlucka            #+#    #+#             */
-/*   Updated: 2026/07/20 20:23:50 by mlucka           ###   ########.fr       */
+/*   Updated: 2026/07/21 03:35:16 by mlucka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,35 @@ int	main(int argc, char **argv)
 {
 	t_stack	stack;
 	t_node	*current;
+	char	**split;
+	int		count;
 
-	// check disorder - call the disorder function
-	// validate all the inputs - if its a number, if you have a char,
-	// if you have a string, etc - errors?
-	// argc number of arguments,array of strings or argv the arguments themselves
-	// create the stack
-	// fill the stack
-	// print all operations / benchmode - print statistics
-	if (check_arguments(argc, argv) == 0)
+	if (argc == 2)
 	{
-		write(1, "Error\n", 6);
-		return (1);
+		split = ft_split(argv[1], ' ');
+		if (!split)
+			return (1);
+		count = count_split(split);
+		if (!check_arguments(count, split))
+		{
+			write(2, "Error\n", 6);
+			free_split(split);
+			return (1);
+		}
+		build_stack(count, &stack, split);
+		free_split(split);
 	}
-	if (check_duplicates(argc, argv) == 0)
+	else
 	{
-		write(2, "Error\n", 6);
-		return (1);
+		if (!check_arguments(argc - 1, &argv[1]))
+		{
+			write(2, "Error\n", 6);
+			return (1);
+		}
+		build_stack(argc - 1, &stack, &argv[1]);
 	}
-	build_stack(argc, &stack, argv);
 	current = stack.head;
-	while (current != NULL)
+	while (current)
 	{
 		printf("%d\n", current->value);
 		current = current->next;
